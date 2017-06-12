@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component }from 'react'
 import './style.sass'
 import Card from './Card'
 import logo from './lotrlogo.svg'
@@ -61,7 +61,7 @@ const cardArray = [
   }
 ]
 
-class App extends React.Component {
+class App extends Component {
   constructor () {
     super()
     this.state = {
@@ -70,6 +70,50 @@ class App extends React.Component {
       turned: [],
       win: false
     }
+  }
+
+  // let myCoolFunction1 = function () {
+  //   return 'I am a cool function';
+  // }
+  // 
+  // myCoolFunction2 () {
+  //   return 'I am also cool';
+  // }
+  //
+  // let myCoolFunction3 = () => {
+  //   return 'I am cool as well'
+  // }
+  //
+  // myCoolFunction4 = () => 'I am really cool';
+
+  componentWillMount () {
+    const game = JSON.parse(window.sessionStorage.getItem('game'))
+    if (game && !game.win){
+      this.setState(game)
+    } else
+      this.setState({
+      cards: this._randomizeCards(cardArray.concat(cardArray)),
+      matched: [],
+      win: false
+    })
+  }
+
+  _randomizeCards =  (array) => {
+    let currentIndex = array.length, temporaryValue, randomIndex
+
+  // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex -= 1
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex]
+      array[currentIndex] = array[randomIndex]
+      array[randomIndex] = temporaryValue
+    }
+    return array
   }
 
 
