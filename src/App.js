@@ -75,7 +75,7 @@ class App extends Component {
   // let myCoolFunction1 = function () {
   //   return 'I am a cool function';
   // }
-  // 
+  //
   // myCoolFunction2 () {
   //   return 'I am also cool';
   // }
@@ -114,6 +114,35 @@ class App extends Component {
       array[randomIndex] = temporaryValue
     }
     return array
+  }
+
+  flipCard = (index) => {
+    const { turned, cards } = this.state
+    let isMatched
+    if (turned.length < 2) {
+      this.setState({
+        turned: turned.concat(index)
+      }, () => {
+        if (this.state.turned.length === 2) {
+          if (cards[this.state.turned[0]].name === cards[this.state.turned[1]].name) {
+            this.setState({
+              matched: this.state.matched.concat(...this.state.turned),
+              turned: []
+            }, () => {
+              if (this.state.matched.length === cards.length) {
+                setTimeout(() => {
+                  this.setState({ win: true })
+                }, SHOW_CARD/2)
+              }
+            })
+          } else {
+            setTimeout(() => {
+              this.setState({ turned: [] })
+            }, SHOW_CARD)
+          }
+        }
+      })
+    }
   }
 
 
